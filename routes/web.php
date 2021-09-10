@@ -34,5 +34,5 @@ Route::get('/user/{user}','UserController@show')
 /**
  * 接受用户提交的表单信息
  */
-Route::get('/u','UserController@store')
-    ->name('user.store');
+//Route::get('/u','UserController@store')
+//    ->name('user.store');
