@@ -41,4 +41,7 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+    //定义需要交互的数据库
+    protected $table = 'users';
 }
