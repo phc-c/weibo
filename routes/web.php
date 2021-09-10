@@ -23,5 +23,16 @@ Route::get('/signup','UserController@create')
  * 用户资源路由
 */
 Route::resource('users','UserController');
+
+
+/**
+ * 显示用户信息
+ */
 Route::get('/user/{user}','UserController@show')
 ->name('user.show');
+
+/**
+ * 接受用户提交的表单信息
+ */
+Route::get('/u','UserController@store')
+    ->name('user.store');
