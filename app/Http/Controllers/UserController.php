@@ -26,13 +26,14 @@ class UserController extends Controller
          * 密码匹配验证 confirmed
          * 验证通过之后再存入数据库
          */
-        $this -> validate($request,
-            [
-                'name'=>'require|unique:users|max:50',
-                'email'=>'require|email|unique:users|max:255',
-                'password'=>'require|confirmed|min:6',
-            ]);
-        return;
+//        $this -> validate($request,
+//            [
+//                'name'=>'required|unique:users|max:50',
+//                'email'=>'required|email|unique:users|max:255',
+//                'password'=>'required|confirmed|min:6',
+//            ]);
+//        return;
+        dd($request);
     }
 
 }

@@ -7,7 +7,10 @@
             <h5>注册</h5>
         </div>
         <div class="card-body">
-            <form method="POST" action="{{route('user.store')}}">
+
+            @include('shared._errors')
+
+            <form method="POST" action="{{route('users.store')}}">
                 {{csrf_field()}}
                 <div class="form-group">
                     <lable for="name">名称</lable>
