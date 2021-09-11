@@ -7,11 +7,13 @@ use Illuminate\Http\Request;
 
 class UserController extends Controller
 {
-    public function create(){
+    public function create()
+    {
         return view('user.create');
     }
 
-    public function show(User $user){
+    public function show(User $user)
+    {
         return view('user.show',compact('user'));
     }
 
@@ -35,7 +37,7 @@ class UserController extends Controller
             ]);
 
         /**
-         * 获取用户输入的信息
+         * 用$request获取用户输入的信息
          *  User::create创建成功后会返回一个用户对象
         */
         $user = User::create(
@@ -54,7 +56,7 @@ class UserController extends Controller
          * 重定向到user.show用户展示信息界面
          * 通过路由跳转实现数据绑定$user
          */
-        return redirect()->route('users.show',[$user]);
+        return redirect()->route('user.show',[$user]);
     }
 
 }

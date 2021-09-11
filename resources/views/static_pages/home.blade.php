@@ -1,8 +1,8 @@
 @extends('layouts.default')
-@section('title','主页')
+@section('title','首页')
 @section('content')
     <div claSS="jumbotron">
-        <h1>主页</h1>
+        <h1>首页</h1>
         <p class="lead">你现在看到的是</p>
         <p>一切从这里开始</p>
         <p>
