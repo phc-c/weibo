@@ -6,15 +6,6 @@
                 <li class="nav-item">
                     <a href="#" class="nav-link">用户列表</a>
                 </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="{{route('login')}}">登录</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="{{route('home')}}">首页</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="{{route('help')}}">帮助</a>
-                </li>
                 <li class="nav-item dropdown">
                     <a href="#" class="nav-link"
                        id="dropdown-toggle"
@@ -40,6 +31,9 @@
                             </form>
                         </a>
                     </div>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{{route('login')}}">登录</a>
                 </li>
             @else
                 <li class="nav-item">

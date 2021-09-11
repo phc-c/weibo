@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\User;
 use Illuminate\Http\Request;
+use Auth;
 
 class UserController extends Controller
 {
@@ -20,6 +21,7 @@ class UserController extends Controller
     public function store(Request $request)
     {
         /**
+         * 用户认证
          * 对小白较为友好的的验证表单方式validate
          * 第一个参数为用户输入的数据,第二个参数为验证的规则
          * 存在性验证 require验证是否为空
@@ -48,9 +50,15 @@ class UserController extends Controller
             ]);
 
         /**
+         * 用户注册成功后自动登录
+         * Auth::login($user)
+         */
+        Auth::login($user);
+
+        /**
          * 顶部显示注册成功的信息
          */
-        session()->flash('success','欢迎，您已经注册成功');
+        session()->flash('success','欢迎，您将在这里开始一段美好的旅程~');
 
         /**
          * 重定向到user.show用户展示信息界面
