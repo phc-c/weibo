@@ -33,8 +33,20 @@
                                value="{{old('password')}}">
                     </div>
 
+                    <div class="form-group">
+                        <div class="form-check">
+                            <input type="checkbox" name="remember"
+                                   class="form-check-input"
+                                   id="exampleCheck1">
+                            <lable class="form-check-label"
+                                   for="exampleCheck1">记住我
+                            </lable>
+                        </div>
+                    </div>
+
                     <button type="submit"
-                            class="btn btn-primary">登录</button>
+                            class="btn btn-primary">登录
+                    </button>
                 </form>
 
                 <hr>

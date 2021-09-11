@@ -33,7 +33,7 @@ class SessionController extends Controller
          * Auth::user()获取当前登录用户的信息
          * withInput()能获取到模板里old('email')上一次提交内容
          */
-        if(Auth::attempt($credentials)){
+        if(Auth::attempt($credentials,$request->has('remember'))){
             session()->flash('success','欢迎回来！');
             return redirect()->route('user.show',[Auth::user()]);
         }else{
