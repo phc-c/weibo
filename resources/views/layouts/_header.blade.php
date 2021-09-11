@@ -33,7 +33,7 @@
                     </div>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="{{route('login')}}">登录</a>
+                    <a class="nav-link" href="{{route('help')}}">帮助</a>
                 </li>
             @else
                 <li class="nav-item">
@@ -41,8 +41,8 @@
                        class="nav-link">帮助</a>
                 </li>
                 <li class="nav-item">
-                    <a href="{{route('login')}}"
-                       class="nav-link">登录</a>
+                    <a href="{{route('signup')}}"
+                       class="nav-link">注册</a>
                 </li>
             @endif
         </ul>
