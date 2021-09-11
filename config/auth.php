@@ -31,13 +31,13 @@ return [
     | users are actually retrieved out of your database or other storage
     | mechanisms used by this application to persist your user's data.
     |
-    | Supported: "sessions"
+    | Supported: "session"
     |
     */
 
     'guards' => [
         'web' => [
-            'driver' => 'sessions',
+            'driver' => 'session',
             'provider' => 'users',
         ],
     ],

@@ -6,9 +6,11 @@
         <p class="lead">你现在看到的是</p>
         <p>一切从这里开始</p>
         <p>
+        <div>
             <a class="btn btn-lg btn-success"
-               href="{{route('signup')}}"
-               role="button">现在注册</a>
+               href="{{route('login')}}"
+               role="button">登录</a>
+        </div>
         </p>
     </div>
 @stop

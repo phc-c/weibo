@@ -9,7 +9,7 @@ class SessionController extends Controller
 {
     /**
      * 登录界面
-    */
+     */
     public function create()
     {
         return view('sessions.create');
@@ -17,13 +17,13 @@ class SessionController extends Controller
 
     /**
      * 认证用户身份
-    */
+     */
     public function store(Request $request)
     {
-        $credentials = $this -> validate($request,
+        $credentials = $this->validate($request,
             [
-                'email'=>'required|email|max:255',
-                'password'=>'required',
+                'email' => 'required|email|max:255',
+                'password' => 'required',
             ]);
 
         /**
@@ -40,7 +40,6 @@ class SessionController extends Controller
             session()->flash('danger','对不起您输入的邮箱和密码不匹配！');
             return redirect()->back()->withInput();
         }
-        return;
     }
 
 }
