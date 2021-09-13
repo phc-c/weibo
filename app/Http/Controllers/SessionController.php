@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Auth;
+use function PHPUnit\Framework\once;
 
 class SessionController extends Controller
 {
@@ -32,10 +33,17 @@ class SessionController extends Controller
          * 查找不到认证失败
          * Auth::user()获取当前登录用户的信息
          * withInput()能获取到模板里old('email')上一次提交内容
+         *
+         * intended()重定向到上一次请求尝试访问的页面
+         * 接收一个默认的地址，如果上一次访问为空则跳到默认地址
          */
         if(Auth::attempt($credentials,$request->has('remember'))){
             session()->flash('success','欢迎回来！');
-            return redirect()->route('user.show',[Auth::user()]);
+            /*
+             * 默认地址为方法users.show()指向的路由user.show
+             * */
+            $fallback= route('users.show',[Auth::user()]);
+            return redirect()->intended($fallback);
         }else{
             session()->flash('danger','对不起您输入的邮箱和密码不匹配！');
             return redirect()->back()->withInput();
@@ -50,6 +58,21 @@ class SessionController extends Controller
         Auth::logout();
         session()->flash('success','您已成功退出登录！');
         return redirect()->route('home');
+    }
+
+    /*
+     * 只让未登录的用户才能访问登录页面create
+     * guest允许未登录用户进行的操作
+     * 只在本页面有效
+     *
+     * 此处调用的create()方法访问的是session.create登录页面
+     * */
+    public function __construct()
+    {
+        $this->middleware('guest',
+            [
+                'only'=>['create']
+            ]);
     }
 
 }

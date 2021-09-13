@@ -8,6 +8,32 @@ use Auth;
 
 class UserController extends Controller
 {
+    /*
+     * 给用户设置权限
+     * 只有登录了的用户才能访问edit和update动作
+     * 登录了自己的用户只能修改自己的信息，而不能修改他人的信息
+     *
+     * 使用laravel提供的Auth中间件过滤edit和update动作
+     *
+     * auth只允许登录用户进行的操作
+     * guest只允许未登录用户进行的操作
+     * 只在本页面有效
+     *
+     *此处调用的create()方法访问的是user.create注册页面
+     * */
+    public function __construct()
+    {
+        $this->middleware('auth',
+            [
+                'except' => ['show', 'create', 'store']
+            ]);
+        $this->middleware('guest',
+        [
+            'only'=>['create']
+        ]);
+    }
+
+
     public function create()
     {
         return view('user.create');
@@ -67,14 +93,16 @@ class UserController extends Controller
          * 重定向到user.show用户展示信息界面
          * 通过路由跳转实现数据绑定$user
          */
-        return redirect()->route('user.show', [$user]);
+        return redirect()->route('users.show', [$user]);
     }
 
     /**
      * 编辑用户界面
+     * authorize()方法验证用户授权策略
      */
     public function edit(User $user)
     {
+        $this->authorize('update', $user);
         return view('user.edit', compact('user'));
     }
 
@@ -83,6 +111,11 @@ class UserController extends Controller
      */
     public function update(User $user, Request $request)
     {
+        /*
+         * authorize()方法验证用户授权策略
+         * */
+        $this->authorize('update', $user);
+
         /*
          * 将获取到的输入数据进行认证
          * */
@@ -101,7 +134,7 @@ class UserController extends Controller
          * */
         $data = [];
         $data['name'] = $request->name;
-        if($request->password){
+        if ($request->password) {
             $data['password'] = bcrypt($request->password);
         }
         $user->update($data);
@@ -109,7 +142,7 @@ class UserController extends Controller
         /*
          * session()输出提示信息
          * */
-        session()->flash('success','个人资料修改成功');
+        session()->flash('success', '个人资料修改成功');
 
         /*
          * 更新完成后将信息重定向到user.show页面

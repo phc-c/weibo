@@ -28,7 +28,6 @@ Route::resource('users', 'UserController');
 /**
  * 会话 创建 登录 注销
  */
-
 Route::get('/login', 'SessionController@create')
     ->name('login');
 Route::post('/store', 'SessionController@store')

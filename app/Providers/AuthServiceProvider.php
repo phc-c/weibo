@@ -25,6 +25,16 @@ class AuthServiceProvider extends ServiceProvider
     {
         $this->registerPolicies();
 
-        //
+        /*
+         * 修改策略自动发现的逻辑
+         * 动态返回模型对养的策略名
+         * */
+        Gate::guessPolicyNamesUsing(function ($modelClass)
+        {
+            /*
+             * 动态返回模型对养的策略名
+             * */
+            return 'App\Policies\\'.class_basename($modelClass).'Policy';
+        });
     }
 }
