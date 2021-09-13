@@ -25,20 +25,25 @@ class UserController extends Controller
     {
         $this->middleware('auth',
             [
-                'except' => ['show', 'create', 'store']
+                'except' => ['show', 'create', 'store', 'index']
             ]);
         $this->middleware('guest',
-        [
-            'only'=>['create']
-        ]);
+            [
+                'only' => ['create']
+            ]);
     }
 
-
+   /*
+    * 注册页面
+    * */
     public function create()
     {
         return view('user.create');
     }
 
+    /*
+     * 显示用户信息页面
+     * */
     public function show(User $user)
     {
         /*
@@ -47,6 +52,9 @@ class UserController extends Controller
         return view('user.show', compact('user'));
     }
 
+    /*
+     * 用户注册信息认证页面
+     * */
     public function store(Request $request)
     {
         /**
@@ -150,6 +158,15 @@ class UserController extends Controller
          * */
         return redirect()->route('users.show', $user->id);
 
+    }
+
+    /*
+     * 用户列表
+     * */
+    public function index()
+    {
+        $user = User::all();
+        return view('user.index',compact('user'));
     }
 
 }
