@@ -15,7 +15,10 @@ class UserController extends Controller
 
     public function show(User $user)
     {
-        return view('user.show',compact('user'));
+        /*
+         * 此处跳转的是resources/user/show.blade/php页面
+         * */
+        return view('user.show', compact('user'));
     }
 
     public function store(Request $request)
@@ -31,22 +34,22 @@ class UserController extends Controller
          * 密码匹配验证 confirmed
          * 验证通过之后再存入数据库
          */
-        $this -> validate($request,
+        $this->validate($request,
             [
-                'name'=>'required|unique:users|max:50',
-                'email'=>'required|email|unique:users|max:255',
-                'password'=>'required|confirmed|min:6',
+                'name' => 'required|unique:users|max:50',
+                'email' => 'required|email|unique:users|max:255',
+                'password' => 'required|confirmed|min:6',
             ]);
 
         /**
          * 用$request获取用户输入的信息
          *  User::create创建成功后会返回一个用户对象
-        */
+         */
         $user = User::create(
             [
-                'name'=>$request->name,
-                'email'=>$request->email,
-                'password'=>bcrypt($request->password),
+                'name' => $request->name,
+                'email' => $request->email,
+                'password' => bcrypt($request->password),
             ]);
 
         /**
@@ -58,13 +61,62 @@ class UserController extends Controller
         /**
          * 顶部显示注册成功的信息
          */
-        session()->flash('success','欢迎，您将在这里开始一段美好的旅程~');
+        session()->flash('success', '欢迎，您将在这里开始一段美好的旅程~');
 
         /**
          * 重定向到user.show用户展示信息界面
          * 通过路由跳转实现数据绑定$user
          */
-        return redirect()->route('user.show',[$user]);
+        return redirect()->route('user.show', [$user]);
+    }
+
+    /**
+     * 编辑用户界面
+     */
+    public function edit(User $user)
+    {
+        return view('user.edit', compact('user'));
+    }
+
+    /**
+     * 更新用户信息
+     */
+    public function update(User $user, Request $request)
+    {
+        /*
+         * 将获取到的输入数据进行认证
+         * */
+        $this->validate($request,
+            [
+                'name' => 'required|max:50',
+                'password' => 'nullable|confirmed|min:6'
+            ]);
+
+        /*
+         * 认证通过后更新数据库里用户信息
+         * 如果不想进行密码更新也可以 输入密码的情况
+         *   if($request->password)
+            $data['password'] = $request->password;
+         * 密码和姓名均修改也可以
+         * */
+        $data = [];
+        $data['name'] = $request->name;
+        if($request->password){
+            $data['password'] = bcrypt($request->password);
+        }
+        $user->update($data);
+
+        /*
+         * session()输出提示信息
+         * */
+        session()->flash('success','个人资料修改成功');
+
+        /*
+         * 更新完成后将信息重定向到user.show页面
+         * 此处跳转到的是UserController/users资源控制器
+         * */
+        return redirect()->route('users.show', $user->id);
+
     }
 
 }

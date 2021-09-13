@@ -26,12 +26,6 @@ Route::resource('users', 'UserController');
 
 
 /**
- * 显示用户信息
- */
-Route::get('/user/{user}', 'UserController@show')
-    ->name('user.show');
-
-/**
  * 会话 创建 登录 注销
  */
 
@@ -41,3 +35,4 @@ Route::post('/store', 'SessionController@store')
     ->name('store');
 Route::delete('/logout', 'SessionController@destroy')
     ->name('logout');
+
