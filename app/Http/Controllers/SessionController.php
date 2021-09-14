@@ -17,7 +17,7 @@ class SessionController extends Controller
     }
 
     /**
-     * 认证用户身份
+     * 登录时认证用户身份
      */
     public function store(Request $request)
     {
@@ -37,15 +37,29 @@ class SessionController extends Controller
          * intended()重定向到上一次请求尝试访问的页面
          * 接收一个默认的地址，如果上一次访问为空则跳到默认地址
          */
-        if(Auth::attempt($credentials,$request->has('remember'))){
-            session()->flash('success','欢迎回来！');
+        if (Auth::attempt($credentials,
+            $request->has('remember'))) {
             /*
-             * 默认地址为方法users.show()指向的路由user.show
+             * 用户没激活登录视为认证失败(前端认证通过，但后端认证不通过)
+             * Auth::$user->activated是激活账户验证
              * */
-            $fallback= route('users.show',[Auth::user()]);
-            return redirect()->intended($fallback);
-        }else{
-            session()->flash('danger','对不起您输入的邮箱和密码不匹配！');
+            if (Auth::user->activated) {
+                session()->flash('success', '欢迎回来！');
+                /*
+                 * 默认地址为方法users.show()指向的路由user.show
+                 * */
+                $fallback = route('users.show', [Auth::user()]);
+                return redirect()->intended($fallback);
+            } else {
+                Auth::logout();
+                session()->flash('warning', '对不起您的账户未激活，
+                请检查邮箱中的注册邮件进行激活！');
+            }
+        } else {
+            /*
+             * 前端认证不通过
+             * */
+            session()->flash('danger', '对不起您输入的邮箱和密码不匹配！');
             return redirect()->back()->withInput();
         }
     }
@@ -54,9 +68,10 @@ class SessionController extends Controller
  * 退出登录
  * 用Auth::logout()
  * */
-    public function destroy(){
+    public function destroy()
+    {
         Auth::logout();
-        session()->flash('success','您已成功退出登录！');
+        session()->flash('success', '您已成功退出登录！');
         return redirect()->route('home');
     }
 
@@ -71,7 +86,7 @@ class SessionController extends Controller
     {
         $this->middleware('guest',
             [
-                'only'=>['create']
+                'only' => ['create']
             ]);
     }
 

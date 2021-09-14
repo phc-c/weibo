@@ -35,3 +35,11 @@ Route::post('/store', 'SessionController@store')
 Route::delete('/logout', 'SessionController@destroy')
     ->name('logout');
 
+
+
+/*
+ * 注册时通过邮箱激活用户
+ * */
+Route::get('signup/confirm/{token}',
+    'UsersController@confirmEmail')
+    ->name('confirm_email');

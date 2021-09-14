@@ -6,6 +6,8 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Auth;
 use \Illuminate\Http\RedirectResponse;
+use Illuminate\Support\Facades\Mail;
+
 
 class UserController extends Controller
 {
@@ -26,7 +28,8 @@ class UserController extends Controller
     {
         $this->middleware('auth',
             [
-                'except' => ['show', 'create', 'store', 'index']
+                'except' => ['show', 'create', 'store',
+                    'index','confirmEmail']
             ]);
         $this->middleware('guest',
             [
@@ -54,7 +57,7 @@ class UserController extends Controller
     }
 
     /*
-     * 用户注册信息认证页面
+     * 注册时用户注册信息认证页面
      * */
     public function store(Request $request)
     {
@@ -91,18 +94,57 @@ class UserController extends Controller
          * 用户注册成功后自动登录
          * Auth::login($user)
          */
-        Auth::login($user);
+//        Auth::login($user);
+
+        /*
+         * 将自动登录替换为邮箱激活
+         * */
+        $this->sendEmailConfirmationTo($user);
+        session()->flash('success', '验证邮件已经发到您的邮箱上，请注意查收');
+        return redirect('/');
 
         /**
          * 顶部显示注册成功的信息
          */
-        session()->flash('success', '欢迎，您将在这里开始一段美好的旅程~');
+       /* session()->flash('success', '欢迎，您将在这里开始一段美好的旅程~');*/
 
         /**
          * 重定向到user.show用户展示信息界面
          * 通过路由跳转实现数据绑定$user
          */
-        return redirect()->route('users.show', [$user]);
+//        return redirect()->route('users.show', [$user]);
+    }
+
+    /*
+     * 注册时 用户注册认证成功后通过邮件激活用户
+     * */
+    protected function sendEmailConfirmationTo($user)
+    {
+        $view = 'emails.confirm';
+        $data = compact('user');
+        $from = 'puehngcun@sailvan.com';
+        $name = 'puhengcun';
+        $to = $user->email;
+        $subject ='感谢注册 weibo 网页!请确认你的邮箱';
+
+        Mail::send($view,$data,function ($message)
+        use( $from, $name, $to,$subject){
+            $message->from($from,$name)->to($to)->subject($subject);
+        });
+    }
+
+    /*
+     * 点击发送邮件的控制器方法
+     * */
+    public function confirmEmail($token){
+        $user = User::where('activation_token',$token)
+            ->firstOrFail();
+        $user->activated = true;
+        $user->activation_token = null;
+        $user->save();
+        Auth::login($user);
+        session()->flash('success','恭喜您激活成功');
+        return redirect()->route('users.show',[$user]);
     }
 
     /**
