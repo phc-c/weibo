@@ -33,7 +33,7 @@
                         <lable for="email">邮箱</lable>
                         <input type="text" name="email"
                                class="form-control"
-                               value="{{$user->email}}" disabled>
+                               value="{{$user->email}}">
                     </div>
 
                     <div class="form-group">

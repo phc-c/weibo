@@ -28,8 +28,7 @@ class UserController extends Controller
     {
         $this->middleware('auth',
             [
-                'except' => ['show', 'create', 'store',
-                    'index','confirmEmail']
+                'except' => ['show', 'create', 'store', 'index']
             ]);
         $this->middleware('guest',
             [
@@ -94,31 +93,31 @@ class UserController extends Controller
          * 用户注册成功后自动登录
          * Auth::login($user)
          */
-//        Auth::login($user);
+        Auth::login($user);
 
         /*
          * 将自动登录替换为邮箱激活
          * */
-        $this->sendEmailConfirmationTo($user);
+/*        $this->sendEmailConfirmationTo($user);
         session()->flash('success', '验证邮件已经发到您的邮箱上，请注意查收');
-        return redirect('/');
+        return redirect('/');*/
 
         /**
          * 顶部显示注册成功的信息
          */
-       /* session()->flash('success', '欢迎，您将在这里开始一段美好的旅程~');*/
+        session()->flash('success', '欢迎，您将在这里开始一段美好的旅程~');
 
         /**
          * 重定向到user.show用户展示信息界面
          * 通过路由跳转实现数据绑定$user
          */
-//        return redirect()->route('users.show', [$user]);
+        return redirect()->route('users.show', [$user]);
     }
 
     /*
      * 注册时 用户注册认证成功后通过邮件激活用户
      * */
-    protected function sendEmailConfirmationTo($user)
+    /*protected function sendEmailConfirmationTo($user)
     {
         $view = 'emails.confirm';
         $data = compact('user');
@@ -131,12 +130,12 @@ class UserController extends Controller
         use( $from, $name, $to,$subject){
             $message->from($from,$name)->to($to)->subject($subject);
         });
-    }
+    }*/
 
     /*
      * 点击发送邮件的控制器方法
      * */
-    public function confirmEmail($token){
+    /*public function confirmEmail($token){
         $user = User::where('activation_token',$token)
             ->firstOrFail();
         $user->activated = true;
@@ -145,7 +144,7 @@ class UserController extends Controller
         Auth::login($user);
         session()->flash('success','恭喜您激活成功');
         return redirect()->route('users.show',[$user]);
-    }
+    }*/
 
     /**
      * 编辑用户界面
@@ -173,6 +172,7 @@ class UserController extends Controller
         $this->validate($request,
             [
                 'name' => 'required|max:50',
+                'email' => 'required|email|unique:users|max:255',
                 'password' => 'nullable|confirmed|min:6'
             ]);
 
@@ -185,6 +185,7 @@ class UserController extends Controller
          * */
         $data = [];
         $data['name'] = $request->name;
+        $data['email']= $request->email;
         if ($request->password) {
             $data['password'] = bcrypt($request->password);
         }
@@ -223,7 +224,7 @@ class UserController extends Controller
         $this->authorize('destroy', $user);
         $user->delete();
         session()->flash('success',
-            '成功删除  id= ' . $user->id . ' 的用户 ' . $user->name);
+            '成功删除排第 ' . $user->id . ' 的用户 ' . $user->name);
         return back();
     }
 

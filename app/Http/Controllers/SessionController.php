@@ -43,19 +43,21 @@ class SessionController extends Controller
              * 用户没激活登录视为认证失败(前端认证通过，但后端认证不通过)
              * Auth::$user->activated是激活账户验证
              * */
-            if (Auth::user->activated) {
+//            if (Auth::user->activated) {
                 session()->flash('success', '欢迎回来！');
                 /*
                  * 默认地址为方法users.show()指向的路由user.show
                  * */
                 $fallback = route('users.show', [Auth::user()]);
                 return redirect()->intended($fallback);
-            } else {
+            }
+/*            else {
                 Auth::logout();
                 session()->flash('warning', '对不起您的账户未激活，
                 请检查邮箱中的注册邮件进行激活！');
-            }
-        } else {
+            }*/
+//        }
+        else {
             /*
              * 前端认证不通过
              * */
