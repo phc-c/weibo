@@ -9,7 +9,7 @@
             @endforeach
         </div>
         <div class="mr-3">
-{{--            {!! $user->render() !!}--}}
+{{--           {!! $user->render() !!}--}}
         </div>
     </div>
 @stop

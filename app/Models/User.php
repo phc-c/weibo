@@ -46,6 +46,10 @@ class User extends Authenticatable
     protected $table = 'users';
 
     //gravatar
+    /**
+     * @var mixed
+     */
+
     public function gravatar($size='100')
     {
         $hash=md5(strtolower(trim($this->attributes['email'])));

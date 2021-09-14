@@ -29,4 +29,15 @@ class UserPolicy
     {
         return $currentUser->id===$user->id;
     }
+
+    /*
+     * 管理员删除用户策略
+     * 登录的管理员才能删除用户且不能删除自己
+     * */
+    public function destroy(User $currentUser,User $user)
+    {
+        return $currentUser->is_admin
+            && $currentUser->id !== $user->id;
+    }
 }
+

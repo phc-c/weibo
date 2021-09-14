@@ -16,10 +16,5 @@ class UsersTableSeeder extends Seeder
     public function run()
     {
         User::factory()->count(500)->create();
-        $user = User::find(1);
-        $user->name = '黄依依';
-        $user->email = 'huangyiyi.sailvan.com';
-        $user->is_admin=true;
-        $user->save();
     }
 }

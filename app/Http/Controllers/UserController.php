@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Auth;
+use \Illuminate\Http\RedirectResponse;
 
 class UserController extends Controller
 {
@@ -33,9 +34,9 @@ class UserController extends Controller
             ]);
     }
 
-   /*
-    * 注册页面
-    * */
+    /*
+     * 注册页面
+     * */
     public function create()
     {
         return view('user.create');
@@ -167,7 +168,21 @@ class UserController extends Controller
     public function index()
     {
         $user = User::all();
-        return view('user.index',compact('user'));
+        return view('user.index', compact('user'));
+    }
+
+    /*
+     * 删除用户的操作destroy
+     * 未加authorize是对所有登录用户开放的
+     * 加了authorize满足管理员删除条件授权才能通过
+     * */
+    public function destroy(User $user)
+    {
+        $this->authorize('destroy', $user);
+        $user->delete();
+        session()->flash('success',
+            '成功删除  id= ' . $user->id . ' 的用户 ' . $user->name);
+        return back();
     }
 
 }
