@@ -83,7 +83,7 @@ class UserController extends Controller
             [
                 'name' => $request->name,
                 'email' => $request->email,
-                'password' => bcrypt($request->password),
+                'password' => bcrypt($request->password)
             ]);
 
         /**
@@ -162,6 +162,7 @@ class UserController extends Controller
 
     /*
      * 用户列表
+     * paginate()每一页数据的条数
      * */
     public function index()
     {
