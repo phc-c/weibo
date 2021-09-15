@@ -5,8 +5,6 @@ namespace App\Http\Controllers;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Auth;
-use \Illuminate\Http\RedirectResponse;
-use Illuminate\Support\Facades\Mail;
 
 
 class UserController extends Controller
@@ -52,6 +50,8 @@ class UserController extends Controller
         /*
          * 此处跳转的是resources/user/show.blade/php页面
          * */
+/*        $statuses = $user->statuses()
+            ->orderBy('create_at','desc');*/
         return view('user.show', compact('user'));
     }
 

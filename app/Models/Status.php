@@ -9,8 +9,11 @@ class Status extends Model
 {
     use HasFactory;
 
-    public function user()
+    //定义需要交互的数据库
+    protected $table = 'statuses';
+
+/*    public function user()
     {
         return $this->belongsTo(User::class);
-    }
+    }*/
 }

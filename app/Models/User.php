@@ -2,7 +2,6 @@
 
 namespace App\Models;
 
-use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
@@ -70,8 +69,11 @@ class User extends Authenticatable
         });
     }
 
-    public function statuses()
+    /*
+     * 建立一个User对多个Status的模型关系
+     * */
+/*    public function statuses()
     {
         return $this->hasMany(Statuses::class);
-    }
+    }*/
 }
